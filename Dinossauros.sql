@@ -7,14 +7,16 @@ create table regioes
 	nome varchar(70) not null
 );
 
-CREATE TABLE Eras (
-    nome VARCHAR(50) PRIMARY KEY,
+CREATE TABLE eras (
+	id serial primary key,
+	nome VARCHAR(50),
     ano_inicio INT,
     ano_fim INT
 );
 
-CREATE TABLE Grupos (
-    nome VARCHAR(50) PRIMARY KEY
+CREATE TABLE grupos (
+	id serial primary key,
+    nome VARCHAR(50) 
 );
 
 create table descobridores
@@ -23,18 +25,21 @@ create table descobridores
 	nome varchar(80) not null
 ); 
 
-CREATE TABLE Dinossauros (
-    nome VARCHAR(50) PRIMARY KEY,
-    grupo VARCHAR(50),
+CREATE TABLE dinossauros (
+	id serial primary key,
+    nome VARCHAR(50),
     toneladas INT,
     ano_descoberta INT,
-    descobridor VARCHAR(100),
-    era VARCHAR(50),
     ano_inicio INT,
     ano_fim INT,
-    pais VARCHAR(50),
-    FOREIGN KEY (grupo) REFERENCES Grupos(nome),
-    FOREIGN KEY (era) REFERENCES Eras(nome)
+    fk_regiao int, 
+    FOREIGN KEY (fk_regiao) REFERENCES regioes(id),
+	fk_era int,
+    FOREIGN KEY (fk_era) REFERENCES eras(id),
+	fk_grupo int,
+    FOREIGN KEY (fk_grupo) REFERENCES grupos(id),
+	fk_descobridor int,
+    FOREIGN KEY (fk_descobridor) REFERENCES descobridores(id)
 );
 
 select * from regioes;
@@ -55,7 +60,16 @@ INSERT INTO grupos (nome) VALUES
 ('Estegossauros'), 
 ('Terápodes');
 
-INSERT INTO Dinossauros (nome, grupo, toneladas, ano_descoberta, descobridor, era, pais) VALUES
+insert into descobridores (nome) values 
+('Maryanska'), ('John Bell Hatcher'), ('Cinetistas Alemãs'), 
+('Museu Americano de História Natural'), ('Othniel Charles Marsh'), ('Barnum Brown');
+
+insert into regioes (nome) values 
+('Mongólia'), ('Canadá'), ('Tanzânia'), 
+('China'), ('America do Norte'), ('USA');
+
+select * from dinossauros
+INSERT INTO Dinossauros (nome, toneladas, ano_descoberta, ano_inicio, ano_fim, fk_regiao, fk_era,fk_grupo, fk_descobridor) VALUES
 ('Saichania', 'Anquilossauros', 4, 1977, 'Maryanska', 'Cretáceo', 'Mongólia'),
 ('Tricerátops', 'Ceratopsídeos', 6, 1887, 'John Bell Hatcher', 'Cretáceo', 'Canadá'),
 ('Kentrossauro', 'Estegossauros', 2, 1909, 'Cientistas Alemães', 'Jurássico', 'Tanzânia'),
